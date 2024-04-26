@@ -1,0 +1,35 @@
+https://github.com/Wiz-IO/platform-sam-lora
+
+----------------------------------------------------------------------------------------------------------------------------
+LORA IN THOSE FREQUENCY IS REGULATED, WE NEED TO FOLLOW STANDARDS, IF WE DONT FOLLOW THE RULES, WE RISK EXTREME FINES $$$$$$
+IT IS VERRY IMPORTANT TO MAKE SURE WE FOLLOW THE FOLLOWING GUIDELINES !!!!!!!!!! DO NOT DELETE
+----------------------------------------------------------------------------------------------------------------------------
+
+For USA/Canada, the module has been certified for the modulation modes listed below. The user must ensure that
+the module works only on the 902-928 MHz frequency band.
+• Operating Channels:
+    – 500 kHz bandwidth:
+        • 903 MHz ~ 927.5 MHz
+        – 8 Upstream Channels, Channel Spacing 1.6 MHz
+        – 8 Downstream Channels, Channel Spacing 0.6 MHz
+    – 125 kHz bandwidth:
+        • 902.3MHz ~ 927.5MHz
+            – 64 Channels, Channel Spacing 200 kHz
+        • 902.3MHz ~ 927.3 MHz
+            – 26 Channels, Channel Spacing 1 MHz
+• Modulation: LoRa®
+• Spreading Factor:
+    – 500 kHz bandwidth: 7~12
+    – 125 kHz bandwidth: 7~10
+
+The host product manufacturer must ensure that the RF behavior adheres to the certification (for example, FCC,
+ISED) requirements when the module is installed in the final host product.
+
+For Europe, the module has been certified for the modulation modes listed below. The user must ensure that the
+module work only on the 868-868.6 MHz frequency band.
+• Operating Channels:
+    – 125 kHz bandwidth:
+        • 868.1 MHz ~ 868.5 MHz
+            – 3 Channels, Channel Spacing 200 kHz
+• Modulation: LoRa®
+• Spreading Factor: 125 kHz bandwidth: 7~12
