@@ -8,9 +8,8 @@
 #include <LoRa.h>
 #include <Timer.h>
 
-#define RCV
+//#define RCV
 
-//#define Serial Serial2
 int rcv_flg=0;
 int state = 0;
 
@@ -31,15 +30,19 @@ void onReceive(int packetSize) // ! from isr
 
 void LoRa_init()
 {
-    LoRa.setPins(PB6, PA8, PB10);
+    SPI.setMISO(PA6);
+    SPI.setMOSI(PA7);
+    SPI.setSCLK(PA5);
+    LoRa.setPins(PA4, PA2, PA3);
     LoRa.setTxPower(20);
+    
     LoRa.setSyncWord(0xBE);
     if (!LoRa.begin(904600E3)) // frequency
     {
         Serial.println("\n[ERROR] LoRa init failed");
         abort();
     }
-    LoRa.onReceive(onReceive);
+    //LoRa.onReceive(onReceive);
     LoRa.receive();
     Serial.printf("LoRa Init\n");
 }
@@ -50,7 +53,7 @@ void LoRa_send()
     #ifdef RCV
     LoRa.print("RX GOOD");
     #else
-    LoRa.write(digitalRead(PC13));
+    LoRa.write(1);
     #endif
     LoRa.endPacket();
     Serial.println("Packet sent");
@@ -59,13 +62,27 @@ void LoRa_send()
 
 void send_at_interval();
 
+#define ld1 PB5
+#define ld2 PB4
+#define ld3 PB3
+#define ld4 PA15
+
+
+
 void setup()
 {
+    pinMode(ld1,OUTPUT);
+    digitalWrite(ld1,1);
+    pinMode(ld2,OUTPUT);
+    digitalWrite(ld2,1);
+    pinMode(ld3,OUTPUT);
+    digitalWrite(ld3,1);
+    pinMode(ld4,OUTPUT);
+    digitalWrite(ld4,1);
+    delay(1000);
     Serial.begin(9600);
     Serial.println("\nLORA TESTS");
     LoRa_init();
-    pinMode(PB8,OUTPUT);
-    pinMode(PC13,INPUT_PULLUP);
 }
 
 void loop()
