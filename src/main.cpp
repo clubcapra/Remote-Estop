@@ -8,7 +8,7 @@
 #include <LoRa.h>
 #include <Timer.h>
 
-// #define RCV
+//#define RCV
 
 int rcv_flg=0;
 int state = 0;
@@ -17,11 +17,19 @@ int state = 0;
 
 #define TIMEOUT 500
 
+#define ld1 PB5
+#define ld2 PB4
+#define ld3 PB3
+#define ld4 PA15
+
+#define B1 PA8
+#define B2 PA9
+#define B3 PA10
+
+
 void onReceive(int packetSize) // ! from isr
 {
-    Serial.print("RECIEVED : ");
     state = LoRa.read();
-    Serial.println(state);
     while (LoRa.available()){
         LoRa.read();
     }
@@ -42,8 +50,7 @@ void LoRa_init()
         Serial.println("\n[ERROR] LoRa init failed");
         abort();
     }
-    //LoRa.onReceive(onReceive);
-    LoRa.receive();
+    LoRa.onReceive(onReceive);
     Serial.printf("LoRa Init\n");
 }
 
@@ -53,7 +60,7 @@ void LoRa_send()
     #ifdef RCV
     LoRa.print("RX GOOD");
     #else
-    LoRa.write(1);
+    LoRa.write(!digitalRead(B1));
     #endif
     LoRa.endPacket();
     Serial.println("Packet sent");
@@ -61,13 +68,6 @@ void LoRa_send()
 }
 
 void send_at_interval();
-
-#define ld1 PB5
-#define ld2 PB4
-#define ld3 PB3
-#define ld4 PA15
-
-
 
 void setup()
 {
@@ -78,6 +78,7 @@ void setup()
     pinMode(ld3,OUTPUT);
     digitalWrite(ld3,1);
     pinMode(ld4,OUTPUT);
+    pinMode(B1,INPUT_PULLUP);
     digitalWrite(ld4,1);
     delay(1000);
     Serial.begin(9600);
@@ -92,15 +93,24 @@ void loop()
     if(rcv_flg){
         rcv_flg = 0;
         LoRa_send();
-        digitalWrite(PB8,state);
+        digitalWrite(ld4,state);
         previousRCV = millis();
     }
     else if(millis() - previousRCV > TIMEOUT){
         state = 0;
-        digitalWrite(PB8,state);
+        digitalWrite(ld4,state);
     }
     #else
     send_at_interval(); // Call the function to check and execute the action
+    if(rcv_flg){
+        rcv_flg = 0;
+        digitalWrite(ld4,state);
+        previousRCV = millis();
+    }
+    else if(millis() - previousRCV > TIMEOUT){
+        state = 0;
+        digitalWrite(ld4,state);
+    }
     #endif
 }
 
