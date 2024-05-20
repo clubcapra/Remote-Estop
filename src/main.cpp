@@ -1,14 +1,6 @@
-/*
-    LoRa: Send and Receive between two boards
-    More info: 
-        https://github.com/sandeepmistry/arduino-LoRa/blob/master/API.md
-*/
-
 #include <Arduino.h>
 #include <LoRa.h>
 #include <Timer.h>
-
-//#define RCV
 
 int rcv_flg=0;
 int state = 0;
@@ -57,11 +49,7 @@ void LoRa_init()
 void LoRa_send()
 {
     LoRa.beginPacket();
-    #ifdef RCV
-    LoRa.print("RX GOOD");
-    #else
     LoRa.write(!digitalRead(B1));
-    #endif
     LoRa.endPacket();
     Serial.println("Packet sent");
     LoRa.receive();
@@ -72,11 +60,11 @@ void send_at_interval();
 void setup()
 {
     pinMode(ld1,OUTPUT);
-    digitalWrite(ld1,1);
+    digitalWrite(ld1,0);
     pinMode(ld2,OUTPUT);
-    digitalWrite(ld2,1);
+    digitalWrite(ld2,0);
     pinMode(ld3,OUTPUT);
-    digitalWrite(ld3,1);
+    digitalWrite(ld3,0);
     pinMode(ld4,OUTPUT);
     pinMode(B1,INPUT_PULLUP);
     digitalWrite(ld4,1);
@@ -89,18 +77,6 @@ void setup()
 void loop()
 {
     static unsigned long previousRCV = 0;
-    #ifdef RCV
-    if(rcv_flg){
-        rcv_flg = 0;
-        LoRa_send();
-        digitalWrite(ld4,state);
-        previousRCV = millis();
-    }
-    else if(millis() - previousRCV > TIMEOUT){
-        state = 0;
-        digitalWrite(ld4,state);
-    }
-    #else
     send_at_interval(); // Call the function to check and execute the action
     if(rcv_flg){
         rcv_flg = 0;
@@ -111,7 +87,6 @@ void loop()
         state = 0;
         digitalWrite(ld4,state);
     }
-    #endif
 }
 
 void send_at_interval() {
