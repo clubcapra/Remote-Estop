@@ -8,6 +8,8 @@ int state = 0;
 #define REFRESH_PERIOD_MS 350
 
 #define TIMEOUT 500
+#define FREQ_CANADA 904600E3
+#define FREQ_EURO 869525E3
 
 #define ld1 PB5
 #define ld2 PB4
@@ -39,7 +41,7 @@ void LoRa_init()
     LoRa.setTxPower(20);
 
     LoRa.setSyncWord(0xBE);
-    if (!LoRa.begin(904600E3)) // frequency
+    if (!LoRa.begin(FREQ_EURO)) // frequency
     {
         Serial.println("\n[ERROR] LoRa init failed");
         abort();
